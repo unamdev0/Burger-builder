@@ -5,8 +5,8 @@ import styles from './Layout.css'
 const Layout=(props)=>{
     return(
         <Aux>
-            <div className={styles.content}>Toolbar,Sidedrawer,Backdrop</div>
-            <main>
+            <div >Toolbar,Sidedrawer,Backdrop</div>
+            <main className={styles.content} >
                 {props.children}
             </main>
         </Aux>
