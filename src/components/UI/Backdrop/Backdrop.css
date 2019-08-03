@@ -1,0 +1,13 @@
+.Backdrop{
+
+    height:100vh;
+    width: 100vh;
+    position:fixed;
+    z-index:100;
+    border:1px solid #ccc;
+    left:0;
+    top:0;
+    background-color: rgba(0, 0, 0,0.5)
+    
+
+}
