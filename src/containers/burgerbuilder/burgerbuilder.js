@@ -72,18 +72,23 @@ class burgerbuilder extends Component{
        }    
     }
 
-    order=()=>{
+    order= ()=> {
         this.setState({OrderSummary:false})
     }
 
+    cancelOrder= ()=> {
+        this.setState({OrderSummary:true})
+    }
+    purchaseConfirm=()=>{
+        alert("Purchase confirmed")
+    }
 
     render(){
         return(
             <Aux>
-                <Backdrop/>
-                <Modal isVisible={this.state.OrderSummary}><OrderSummary ingredients={this.state.ingredients}/></Modal>
+                <Backdrop clicked={this.cancelOrder} show={!this.state.OrderSummary}  />
+                <Modal isVisible={this.state.OrderSummary}><OrderSummary cancelOrder={this.cancelOrder} purchaseConfirm={this.purchaseConfirm} ingredients={this.state.ingredients}/></Modal>
                 <Burger ingredients={this.state.ingredients}/>
-               
                 
                 <BuildControls totalPrice={this.state.totalPrice} ingredientsAdded = {this.addIngredient} purchasable={this.state.purchasable} ingredientRemoved={this.removeIngredient}/>
                  
