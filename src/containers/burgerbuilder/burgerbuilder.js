@@ -87,7 +87,9 @@ class burgerbuilder extends Component{
         return(
             <Aux>
                 <Backdrop clicked={this.cancelOrder} show={!this.state.OrderSummary}  />
-                <Modal isVisible={this.state.OrderSummary}><OrderSummary cancelOrder={this.cancelOrder} purchaseConfirm={this.purchaseConfirm} ingredients={this.state.ingredients}/></Modal>
+                <Modal isVisible={this.state.OrderSummary}>
+                    <OrderSummary cancelOrder={this.cancelOrder} purchaseConfirm={this.purchaseConfirm} totalPrice={this.state.totalPrice} ingredients={this.state.ingredients}/>
+                    </Modal>
                 <Burger ingredients={this.state.ingredients}/>
                 
                 <BuildControls totalPrice={this.state.totalPrice} ingredientsAdded = {this.addIngredient} purchasable={this.state.purchasable} ingredientRemoved={this.removeIngredient}/>
