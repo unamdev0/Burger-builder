@@ -1,12 +1,20 @@
-import React from 'react'
+import React,{Component} from 'react'
 import styles from './Modal.css'
 
-const Modal =(props)=>(
-    <div style={{
-         opacity: props.isVisible?'0':'1',transform:props.isVisible?'translateY(-100vh)':'translateY(0)'}} className={styles.Modal}>
-        {props.children}
-        
-    </div>
-)
+
+class Modal extends Component{
+    shouldComponentUpdate(nextProps){
+        return nextProps.isVisible!==this.props.isVisible
+    }
+    
+    render(   ){
+        console.log("Modal refreshed")
+        return (   <div style={{
+            opacity: this.props.isVisible?'0':'1',transform:this.props.isVisible?'translateY(-100vh)':'translateY(0)'}} className={styles.Modal}>
+           {this.props.children}
+           
+       </div>)
+    }
+}
 
 export default Modal;
