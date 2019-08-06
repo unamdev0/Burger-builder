@@ -5,6 +5,6 @@
     flex-flow: column;
     align-items: center;
     box-shadow: 0 2px 1px #ccc;
-    margin:auto;
+    margin-bottom:5px;
     padding:10px 0px
 }
