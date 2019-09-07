@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './Navigationitem.css'
-import { classes } from 'istanbul-lib-coverage';
 
 
 const navigationitem =(props)=>(

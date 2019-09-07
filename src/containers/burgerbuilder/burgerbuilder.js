@@ -6,6 +6,10 @@ import styles from './button.css'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 import Backdrop from '../../components/UI/Backdrop/Backdrop'
+import orderInstance from '../../axios-order'
+import orderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+import Spinner from '../../components/UI/Spinner/Spinner'
+import Axios from 'axios'
 
 const INGRIEDIENT_PRICES ={
     salad:15,
@@ -17,9 +21,20 @@ class burgerbuilder extends Component{
     
     
     state={
-        ingredients:{cheese:0,salad:0,meat:0,bacon:0}, totalPrice:0,purchasable:false, OrderSummary:true,
+        ingredients:null, 
+        totalPrice:0,
+        purchasable:false, 
+        OrderSummary:true,
+        loading:false
     }
 
+    componentDidMount(){
+        Axios.get('https://react-app-3608f.firebaseio.com/ingredients.json').then(response=>{
+            console.log(response);
+            this.setState({ingredients:response.data})
+        })
+    }
+    
     addIngredient = (type)=>{
         const oldIngriedientCount = this.state.ingredients[type]
         const newIngriedientCount = oldIngriedientCount + 1
@@ -80,20 +95,43 @@ class burgerbuilder extends Component{
         this.setState({OrderSummary:true})
     }
     purchaseConfirm=()=>{
-        alert("Purchase confirmed")
+        this.setState({loading:true});
+        const orderSum={
+            ingredients:this.state.ingredients,
+            price:this.state.totalPrice,
+            owner:{
+                Name:'Udit',
+                Address:'VIT university'
+            },
+            deliveryOption:'Fast'
+        }
+        orderInstance.post('/order.json',orderSum).then(respone=>{
+            this.cancelOrder()
+            this.setState({loading:false})
+        })
     }
-
+                   
     render(){
+        let order=<OrderSummary cancelOrder={this.cancelOrder} purchaseConfirm={this.purchaseConfirm} totalPrice={this.state.totalPrice} ingredients={this.state.ingredients}/>
+        if(this.state.loading || !this.state.ingredients){
+            order = <Spinner/>
+        }
+        let burger = <Spinner/>
+        if(this.state.ingredients){
+            burger=(
+            <Aux>
+            <Burger ingredients={this.state.ingredients}/>
+            <BuildControls totalPrice={this.state.totalPrice} ingredientsAdded = {this.addIngredient} purchasable={this.state.purchasable} ingredientRemoved={this.removeIngredient}/>
+            </Aux>
+            )
+        }
         return(
             <Aux>
                 <Backdrop clicked={this.cancelOrder} show={!this.state.OrderSummary}  />
                 <Modal isVisible={this.state.OrderSummary}>
-                    <OrderSummary cancelOrder={this.cancelOrder} purchaseConfirm={this.purchaseConfirm} totalPrice={this.state.totalPrice} ingredients={this.state.ingredients}/>
-                    </Modal>
-                <Burger ingredients={this.state.ingredients}/>
-                
-                <BuildControls totalPrice={this.state.totalPrice} ingredientsAdded = {this.addIngredient} purchasable={this.state.purchasable} ingredientRemoved={this.removeIngredient}/>
-                 
+                    {order}
+                     </Modal>         
+                 {burger}
                 <button className={styles.OrderButton} disabled={!this.state.purchasable} onClick={this.order} >Buy</button>
             </Aux>
         )
