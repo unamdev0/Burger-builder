@@ -6,7 +6,6 @@ import styles from "./button.css";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
-import orderInstance from "../../axios-order";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Axios from "axios";
 
@@ -100,8 +99,7 @@ class burgerbuilder extends Component {
     for (let i in this.state.ingredients) {
       queryParams += i + "=" + this.state.ingredients[i] + "&";
     }
-    queryParams = queryParams.substring(0, queryParams.length- 1);
-    console.log(queryParams);
+    queryParams += "price=" + this.state.totalPrice;
 
     this.props.history.push({ pathname: "/checkout", search: queryParams });
   };
