@@ -5,8 +5,7 @@ import styles from './Navigationitems.css'
 
 const navigationitems = (props)=>(
     <ul className={styles.NavigationItems}>
-        <Navigationitem link="#">Checkout</Navigationitem>
-        <Navigationitem link="#">Burger builder</Navigationitem>
+        <Navigationitem link="/">Burger builder</Navigationitem>
     </ul>
 )
 

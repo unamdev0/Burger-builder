@@ -14,7 +14,7 @@ class Checkout extends Component {
     ingredients: {},
     totalPrice:null,
   };
-  componentDidMount() {
+  componentWillMount() {
     var queryParams = this.props.location.search.split("&");
     const totalPrice = queryParams.pop().split("=")[1];
     queryParams[0] = queryParams[0].substring(1);
@@ -38,7 +38,7 @@ class Checkout extends Component {
           exact
           path={this.props.match.path + "/contact-data"}
           render={() => {
-            return <ContactData totalPrice={this.state.totalPrice} ingredients={this.state.ingredients} />;
+            return <ContactData totalPrice={this.state.totalPrice} ingredients={this.state.ingredients} {...this.props} />;
           }}
         />
       </div>
