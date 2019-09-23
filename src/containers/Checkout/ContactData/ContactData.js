@@ -32,15 +32,18 @@ class ContactData extends Component {
 
   order = event => {
     event.preventDefault();
-    console.log(this.props.ingredients);
+    let final_values = {};
+    for (let formElement in this.state.orderDetails) {
+      final_values[
+        this.state.orderDetails[formElement].name
+      ] = this.state.orderDetails[formElement].value;
+    }
+    console.log(final_values);
     this.setState({ loading: true });
     const orderSum = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
-      owner: {
-        Name: "Udit-New",
-        Address: "VIT university"
-      },
+      owner:final_values,
       deliveryOption: "Fast"
     };
     orderInstance.post("/order.json", orderSum).then(respone => {
@@ -49,13 +52,17 @@ class ContactData extends Component {
     this.props.history.push("/");
   };
 
+  inputChangeHandler(event, inputName) {
+    this.state.orderDetails[inputName].value = event.target.value;
+  }
+
   render() {
     let formElement = [];
     for (let key in this.state.orderDetails) {
       formElement.push(this.state.orderDetails[key]);
     }
     let form = (
-      <form>
+      <form onSubmit={this.order}>
         {formElement.map(element => {
           return (
             <Input
@@ -63,12 +70,13 @@ class ContactData extends Component {
               type={element.type}
               placeholder={element.placeholder}
               name={element.name}
+              changed={event => {
+                this.inputChangeHandler(event, element.name);
+              }}
             />
           );
         })}
-        <Button btnType="Success" clicked={this.order}>
-          Order
-        </Button>
+        <Button btnType="Success">Order</Button>
       </form>
     );
     if (this.state.loading) {
