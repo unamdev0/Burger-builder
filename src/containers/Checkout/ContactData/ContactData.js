@@ -5,6 +5,8 @@ import styles from "./ContactData.css";
 import orderInstance from "../../../axios-order";
 import Input from "../../../components/UI/Input/Input";
 
+
+
 class ContactData extends Component {
   state = {
     orderDetails: {
@@ -12,19 +14,22 @@ class ContactData extends Component {
         value: "",
         name: "name",
         type: "text",
-        placeholder: "Your Name"
+        placeholder: "Your Name",
+        valid:false
       },
       email: {
         value: "",
         name: "email",
         type: "email",
-        placeholder: "Your E-mail"
+        placeholder: "Your E-mail",
+        valid:false
       },
       address: {
         value: "",
         name: "address",
         type: "text",
-        placeholder: "Your Address"
+        placeholder: "Your Address",
+        valid:false
       }
     },
     loading: false
@@ -43,7 +48,7 @@ class ContactData extends Component {
     const orderSum = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
-      owner:final_values,
+      owner: final_values,
       deliveryOption: "Fast"
     };
     orderInstance.post("/order.json", orderSum).then(respone => {
@@ -55,6 +60,14 @@ class ContactData extends Component {
   inputChangeHandler(event, inputName) {
     this.state.orderDetails[inputName].value = event.target.value;
   }
+
+//  checkValidation(elementName,value) {
+//     if(elementName=='name'){
+//       if(value.length()>36){
+//         valid:false
+//       }
+//     }
+//   }
 
   render() {
     let formElement = [];

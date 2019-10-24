@@ -6,6 +6,7 @@ const Input = props => {
     <div className={styles.Input}> 
       <label className={styles.Label}>{props.label}</label>
       <input className={styles.InputElement} onChange ={props.changed} {...props} />
+      
     </div>
   );
 };
