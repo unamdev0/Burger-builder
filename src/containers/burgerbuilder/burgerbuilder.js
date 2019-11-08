@@ -8,6 +8,8 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Axios from "axios";
+import { connect } from "react-redux";
+import * as actionTypes from "../../store/action";
 
 const INGRIEDIENT_PRICES = {
   salad: 15,
@@ -17,7 +19,6 @@ const INGRIEDIENT_PRICES = {
 };
 class burgerbuilder extends Component {
   state = {
-    ingredients: null,
     totalPrice: 0,
     purchasable: false,
     OrderSummary: true,
@@ -34,7 +35,7 @@ class burgerbuilder extends Component {
   }
 
   addIngredient = type => {
-    const oldIngriedientCount = this.state.ingredients[type];
+    const oldIngriedientCount =this.state.ingredients[type];
     const newIngriedientCount = oldIngriedientCount + 1;
     const updateIngriedient = {
       ...this.state.ingredients
@@ -147,4 +148,20 @@ class burgerbuilder extends Component {
   }
 }
 
-export default burgerbuilder;
+const mapStatetoProps = state => {
+  return { ings: state.ingredients };
+};
+
+const mapDispatchtoProps = dispatch => {
+  return {
+    onIngredientAdd: ing_name =>
+      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredient: ing_name }),
+    onIngredientRemove: ing_name =>
+      dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredient: ing_name })
+  };
+};
+
+export default connect(
+  mapStatetoProps,
+  mapDispatchtoProps
+)(burgerbuilder);
