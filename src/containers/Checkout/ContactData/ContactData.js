@@ -4,10 +4,12 @@ import Button from "../../../components/UI/Button/Button";
 import styles from "./ContactData.css";
 import orderInstance from "../../../axios-order";
 import Input from "../../../components/UI/Input/Input";
-
-
+import { connect } from "react-redux";
 
 class ContactData extends Component {
+  componentDidMount() {
+    console.log(this.props);
+  }
   state = {
     orderDetails: {
       name: {
@@ -15,21 +17,21 @@ class ContactData extends Component {
         name: "name",
         type: "text",
         placeholder: "Your Name",
-        valid:false
+        valid: false
       },
       email: {
         value: "",
         name: "email",
         type: "email",
         placeholder: "Your E-mail",
-        valid:false
+        valid: false
       },
       address: {
         value: "",
         name: "address",
         type: "text",
         placeholder: "Your Address",
-        valid:false
+        valid: false
       }
     },
     loading: false
@@ -46,8 +48,8 @@ class ContactData extends Component {
     console.log(final_values);
     this.setState({ loading: true });
     const orderSum = {
-      ingredients: this.props.ingredients,
-      price: this.props.totalPrice,
+      ingredients: this.props.ings,
+      price: this.props.price,
       owner: final_values,
       deliveryOption: "Fast"
     };
@@ -60,14 +62,6 @@ class ContactData extends Component {
   inputChangeHandler(event, inputName) {
     this.state.orderDetails[inputName].value = event.target.value;
   }
-
-//  checkValidation(elementName,value) {
-//     if(elementName=='name'){
-//       if(value.length()>36){
-//         valid:false
-//       }
-//     }
-//   }
 
   render() {
     let formElement = [];
@@ -104,4 +98,8 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+  return { ings: state.ingredients, price: state.totalPrice };
+};
+
+export default connect(mapStateToProps)(ContactData);

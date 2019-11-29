@@ -7,7 +7,6 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import Axios from "axios";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/action";
 
@@ -89,14 +88,15 @@ class burgerbuilder extends Component {
   cancelOrder = () => {
     this.setState({ OrderSummary: true });
   };
-  purchaseConfirm = () => {
-    var queryParams = "";
-    for (let i in this.state.ingredients) {
-      queryParams += i + "=" + this.state.ingredients[i] + "&";
-    }
-    queryParams += "price=" + this.props.price;
+    purchaseConfirm = () => {
+    // var queryParams = "";
+    // for (let i in this.state.ingredients) {
+    //   queryParams += i + "=" + this.state.ingredients[i] + "&";
+    // }
+    // queryParams += "price=" + this.props.price;
 
-    this.props.history.push({ pathname: "/checkout", search: queryParams });
+    // this.props.history.push({ pathname: "/checkout", search: queryParams });
+    this.props.history.push('/checkout')
   };
 
   render() {
@@ -119,7 +119,7 @@ class burgerbuilder extends Component {
           <BuildControls
             totalPrice={this.props.price}
             ingredientsAdded={this.props.onIngredientAdd}
-            purchasable={this.state.purchasable}
+            purchasable={this.props.purchasable}
             ingredientRemoved={this.props.onIngredientRemove}
           />
         </Aux>
@@ -132,7 +132,7 @@ class burgerbuilder extends Component {
         {burger}
         <button
           className={styles.OrderButton}
-          disabled={!this.state.purchasable}
+          disabled={!this.props.purchasable}
           onClick={this.order}
         >
           Buy
@@ -143,7 +143,7 @@ class burgerbuilder extends Component {
 }
 
 const mapStatetoProps = state => {
-  return { ings: state.ingredients, price: state.totalPrice };
+  return { ings: state.ingredients, price: state.totalPrice,purchasable:state.purchasable };
 };
 
 const mapDispatchtoProps = dispatch => {
